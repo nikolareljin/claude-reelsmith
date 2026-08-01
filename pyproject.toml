@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-reelsmith"
+version = "0.1.0"
+description = "Batch-finish a folder of video with Claude: enhance audio, stabilize, brand with a logo, and add news-style titles and captions."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Nikola Reljin", email = "nikola.reljin@gmail.com" }]
+keywords = ["claude-code", "video", "ffmpeg", "media", "plugin", "skill"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video :: Conversion",
+]
+dependencies = [
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+# Local speech-to-text. Optional so the lite path installs almost nothing.
+transcribe = ["faster-whisper>=1.0"]
+# Pure-pip SVG rasterizer, used only when inkscape and rsvg-convert are absent.
+svg = ["cairosvg>=2.7"]
+# Coloured console output. Degrades to plain text when missing.
+color = ["termcolor>=2.3.0"]
+dev = [
+    "pytest>=7.4",
+    "ruff>=0.5",
+    "cairosvg>=2.7",
+    "termcolor>=2.3.0",
+]
+
+[project.urls]
+Homepage = "https://nikolareljin.github.io/claude-reelsmith/"
+Documentation = "https://github.com/nikolareljin/claude-reelsmith/tree/main/docs"
+Repository = "https://github.com/nikolareljin/claude-reelsmith"
+Issues = "https://github.com/nikolareljin/claude-reelsmith/issues"
+Author = "https://github.com/nikolareljin"
+
+[project.scripts]
+reelsmith = "claude_reelsmith.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+claude_reelsmith = ["resources/**/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

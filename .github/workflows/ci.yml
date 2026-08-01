@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: claude-reelsmith-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.10", "3.11", "3.12"]
+    # ffmpeg is installed inside the commands because the test suite renders
+    # real video rather than mocking the encoder.
+    uses: nikolareljin/ci-helpers/.github/workflows/python.yml@production
+    with:
+      python_version: ${{ matrix.python_version }}
+      lint_command: "pip install -e '.[dev]' && ruff check src tests"
+      test_command: "sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core && pip install -e '.[dev]' && pytest -q && python -m compileall src"
+
+  package:
+    name: build and smoke-test the wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Install each artifact into a clean venv and run the console script
+        run: |
+          for artifact in dist/*.whl dist/*.tar.gz; do
+            echo "::group::$artifact"
+            rm -rf /tmp/venv
+            python -m venv /tmp/venv
+            /tmp/venv/bin/pip install --quiet "$artifact"
+            /tmp/venv/bin/reelsmith --version
+            /tmp/venv/bin/reelsmith profiles --json > /dev/null
+            echo "::endgroup::"
+          done
+
+      - name: Confirm the skill resources ship inside the wheel
+        run: |
+          rm -rf /tmp/venv
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install --quiet dist/*.whl
+          /tmp/venv/bin/python - <<'PY'
+          import pathlib, claude_reelsmith
+          root = pathlib.Path(claude_reelsmith.__file__).parent / "resources" / "reelsmith"
+          assert (root / "SKILL.md").is_file(), "SKILL.md missing from the wheel"
+          assert (root / "references" / "analysis.md").is_file(), "references missing from the wheel"
+          print("skill resources present")
+          PY

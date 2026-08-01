@@ -1,0 +1,18 @@
+name: Release Tag
+
+on:
+  push:
+    branches: [main]
+
+# auto-tag.yml is used rather than auto-tag-release.yml deliberately. The
+# latter declares an `actions: write` dispatch job and fails at startup unless
+# the caller grants that permission; this repository does not need the dispatch.
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  tag:
+    uses: nikolareljin/ci-helpers/.github/workflows/auto-tag.yml@production
+    with:
+      update_production_tag: false

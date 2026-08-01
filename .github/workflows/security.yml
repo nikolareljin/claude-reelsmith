@@ -1,0 +1,16 @@
+name: Security
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  schedule:
+    # Monday 06:00 UTC — a weekly sweep independent of commit activity.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  gitleaks:
+    uses: nikolareljin/ci-helpers/.github/workflows/gitleaks-scan.yml@production
+    with:
+      fail_on_findings: true

@@ -1,0 +1,19 @@
+name: PR Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: claude-reelsmith-pr-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    uses: nikolareljin/ci-helpers/.github/workflows/pr-gate.yml@production
+    with:
+      python_version: "3.12"
+      lint_command: "pip install -e '.[dev]' && ruff check src tests"
+      test_command: "sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core && pip install -e '.[dev]' && pytest -q && python -m compileall src"
+      check_release_tag: true
+      release_branch: ${{ github.head_ref }}

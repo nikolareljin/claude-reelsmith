@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "generated_by": "claude via reelsmith skill",
+  "project": {
+    "title": "Spring Recital 2026",
+    "subtitle": "Junior division",
+    "date": "2026-06-14",
+    "location": "St Mary's Hall"
+  },
+  "clips": [
+    {
+      "source": "/home/user/videos/IMG_4471.MOV",
+      "index": 1,
+      "include": true,
+      "title": "Bach — Partita No. 2 in D minor, BWV 1004",
+      "primary": "Anna Petrova",
+      "secondary": "Bach · Partita No. 2",
+      "description": "Anna Petrova performs Bach's Partita No. 2 in D minor. Recorded live at the Spring Recital, 14 June 2026.",
+      "tags": ["classical", "violin", "live", "recital"],
+      "slug": "anna_petrova_bach",
+      "merge_with": [],
+      "notes": "Name and work confirmed from the spoken announcement at 0:04."
+    },
+    {
+      "source": "/home/user/videos/IMG_4472.MOV",
+      "index": 2,
+      "include": true,
+      "title": "Vivaldi — Spring, from The Four Seasons",
+      "primary": "Marco Ruiz",
+      "secondary": "Vivaldi · Spring",
+      "description": "Marco Ruiz performs Spring from Vivaldi's The Four Seasons.",
+      "tags": ["classical", "violin", "live"],
+      "slug": "marco_ruiz_vivaldi",
+      "merge_with": ["/home/user/videos/IMG_4473.MOV"],
+      "notes": "Recorded as two clips after a card change; joined into one output."
+    },
+    {
+      "source": "/home/user/videos/IMG_4470.MOV",
+      "index": 3,
+      "include": false,
+      "title": "Camera test",
+      "primary": "",
+      "secondary": "",
+      "description": "",
+      "tags": [],
+      "slug": "",
+      "merge_with": [],
+      "notes": "Eleven seconds of an empty stage while the camera was framed. Excluded rather than deleted so the user can disagree."
+    }
+  ]
+}

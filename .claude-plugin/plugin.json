@@ -1,0 +1,10 @@
+{
+  "name": "claude-reelsmith",
+  "version": "0.1.0",
+  "description": "Batch-finish a folder of video with Claude: enhance audio, stabilize, brand with a logo, and add news-style titles and captions.",
+  "author": { "name": "Nikola Reljin", "url": "https://github.com/nikolareljin" },
+  "homepage": "https://github.com/nikolareljin/claude-reelsmith",
+  "repository": "https://github.com/nikolareljin/claude-reelsmith",
+  "license": "MIT",
+  "keywords": ["claude-code", "video", "ffmpeg", "media", "plugin", "skill"]
+}
