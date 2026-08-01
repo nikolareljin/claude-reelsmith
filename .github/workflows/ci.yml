@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -11,18 +11,61 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  python:
+  # The version matrix runs locally rather than through ci-helpers.
+  #
+  # ci-helpers' reusable ci.yml declares
+  #   concurrency: ci-helpers-ci-${{ github.workflow }}-${{ github.ref }}
+  #                cancel-in-progress: true
+  # Both expressions resolve against the *caller*, so every leg of a matrix
+  # lands in one concurrency group and the legs cancel each other — only the
+  # last-started survives. Calling it once (see `standard` below) is fine;
+  # calling it from a matrix is not.
+  test:
+    name: python ${{ matrix.python_version }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python_version: ["3.10", "3.11", "3.12"]
-    # ffmpeg is installed inside the commands because the test suite renders
-    # real video rather than mocking the encoder.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      # The suite renders real video rather than mocking the encoder, so the
+      # media stack is a hard requirement.
+      - name: Install ffmpeg and fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core
+
+      - name: Install the package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+
+      - name: Confirm the media stack is usable
+        run: reelsmith doctor
+
+      - name: Lint
+        run: ruff check src tests
+
+      - name: Test
+        run: pytest -q
+
+      - name: Byte-compile
+        run: python -m compileall -q src
+
+  # One call to the house-standard preset, for parity with the other plugins
+  # in this marketplace. Not a matrix, for the reason documented above.
+  standard:
     uses: nikolareljin/ci-helpers/.github/workflows/python.yml@production
     with:
-      python_version: ${{ matrix.python_version }}
+      python_version: "3.12"
       lint_command: "pip install -e '.[dev]' && ruff check src tests"
-      test_command: "sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core && pip install -e '.[dev]' && pytest -q && python -m compileall src"
+      test_command: "sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core && pip install -e '.[dev]' && pytest -q"
 
   package:
     name: build and smoke-test the wheel
