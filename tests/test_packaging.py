@@ -11,7 +11,11 @@ import pathlib
 import re
 
 import pytest
-import tomllib
+
+try:  # tomllib landed in the standard library in 3.11
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import tomli as tomllib
 
 import claude_reelsmith
 
