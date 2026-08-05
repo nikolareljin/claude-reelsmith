@@ -27,7 +27,7 @@ actually *is* before naming it.
 
 | Component | What it does |
 |---|---|
-| `/nr-reelsmith` command | Entry point. Runs the whole workflow |
+| `/claude-reelsmith:nr-reelsmith` command | Entry point. Runs the whole workflow |
 | `reelsmith` skill | The workflow itself, plus reference material Claude loads as needed |
 | `reelsmith` CLI | All deterministic media work: probe, analyse, transcribe, render |
 
@@ -69,6 +69,8 @@ uploaded anywhere, and there is no credential to configure or leak.
 /plugin install claude-reelsmith@nikolareljin-plugins
 ```
 
+Restart Claude Code or run `/reload-plugins`, then verify the plugin appears in `/plugin`.
+
 **Step 3** — install the CLI it drives:
 
 ```bash
@@ -102,7 +104,7 @@ You also need **ffmpeg** on your PATH — `sudo apt install ffmpeg`,
 In Claude Code:
 
 ```
-/nr-reelsmith
+/claude-reelsmith:nr-reelsmith
 ```
 
 Claude asks where the videos are, where output should go, whether you have a
@@ -124,7 +126,7 @@ Sample rendered: out/_preview/sample_01.mp4  (20s)
 Proceed with all 23?  [yes / edit titles / cancel]
 ```
 
-Settings are saved to `reelsmith.yaml`, so next time `/nr-reelsmith` is one
+Settings are saved to `reelsmith.yaml`, so next time `/claude-reelsmith:nr-reelsmith` is one
 keypress.
 
 ### Without Claude
@@ -272,8 +274,8 @@ Built and maintained by **Nikola Reljin**, software engineer.
 - LinkedIn — <https://www.linkedin.com/in/nikolareljin>
 
 Also by the same author, in the same marketplace:
-[claude-docsmith](https://github.com/nikolareljin/claude-docsmith) (documentation) ·
-[claude-reposec](https://github.com/nikolareljin/claude-reposec) (security scanning).
+[claude-docsmith](https://nikolareljin.github.io/claude-docsmith/) (documentation) ·
+[claude-reposec](https://nikolareljin.github.io/claude-reposec/) (security scanning).
 
 Full list and background in [ABOUT.md](ABOUT.md).
 

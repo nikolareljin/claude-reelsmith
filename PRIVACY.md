@@ -17,7 +17,7 @@ anywhere.
 
 ## What the agent sees
 
-When you run `/nr-reelsmith` in Claude Code, Claude reads the files reelsmith
+When you run `/claude-reelsmith:nr-reelsmith` in Claude Code, Claude reads the files reelsmith
 produced — `analysis.json`, and the sampled frames in `_work/frames/`. That
 content travels to Anthropic under the terms of your existing Claude Code
 subscription, exactly as any file you ask Claude to read does.
