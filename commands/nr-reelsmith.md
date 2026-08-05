@@ -3,7 +3,7 @@ description: Batch-finish a folder of video — enhance audio, stabilize, brand 
 argument-hint: "[input-dir] [--lite] [--preset news|concert|minimal] [--render-only]"
 ---
 
-# /nr-reelsmith
+# `/claude-reelsmith:nr-reelsmith`
 
 Turn a folder of raw video into finished, branded, correctly-levelled files.
 
