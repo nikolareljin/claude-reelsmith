@@ -282,3 +282,10 @@ Full list and background in [ABOUT.md](ABOUT.md).
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+
+## Clone traffic
+
+![Clone traffic](https://raw.githubusercontent.com/nikolareljin/stats/main/charts/claude-reelsmith.svg)
+
+_Updated daily. Total and unique cloners over the last 14 days._
